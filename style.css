@@ -1,0 +1,30 @@
+:root {
+    --color-light: rgb(255, 248, 241);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    background-color: #282c34;
+    font-size: calc(10px + 2vmin);
+    font-family: 'Exo 2', sans-serif;
+    color: var(--color-light);
+
+
+}
+
+.container {
+    padding: 0.5em;
+    align-items: center;
+    justify-content: center;
+}

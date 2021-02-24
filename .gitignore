@@ -3,3 +3,5 @@ d3js.code-workspace
 env/
 .vscode
 .ipynb_checkpoints
+node_modules
+./data/scratch.js

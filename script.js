@@ -1,22 +1,9 @@
-// const d3 = require('d3');
-// const d3Transform = require('d3-transform');
-// json looks like this:
-// {
-//   "song": "rondo a capriccio g major op.129 rage over a lost penny",
-//   "chords": [{
-//       "timestamp": 0.5,
-//       "chord": "G_maj"
-//     },
-//      {
-//       "timestamp": 2.0,
-//       "chord": "D_maj_min7"
-//     },
-//   ]
-// }
-// function (i, chords) {
-//         console.log(Object.entries(chords))
-//         return chords[i]
-//       }
+const width = 500
+const height = 500
+const cx = width / 2
+const cy = height / 2
+const radius = 200
+const nodeRadius = radius / 10
 
 const data = d3.json('./data/lost_penny.json')
   .then(data => {
@@ -43,46 +30,99 @@ const data = d3.json('./data/lost_penny.json')
 const svg = d3
   .select('#chord')
   .append("svg")
-    .attr('width', 500)
-    .attr('height', 500)
+    .attr('width', width)
+    .attr('height', height)
 
 // create groups within the svg
 svg
   .append("g")
-    .attr('id', 'outer')
+    .attr('id', 'ring')
   .append("circle")
     .attr('title', 'biggun')
-    .attr('cx', 250)
-    .attr('cy', 250)
-    .attr('r',200)
+    .attr('cx', cx)
+    .attr('cy', cy)
+    .attr('r', radius)
     .style('stroke', "#FFFFFF")
     .style('stroke-width', 4)
     .style('fill', "transparent")
-svg
-  .append("g")
-    .attr("id", "nodes")
-      .style('stroke', "white")
-      .style('stroke-width', 2)
-      .style('fill', "white")
 
-function populateNotes() {
-  const notes = ["A", "B", "C", "D", "E", "F", "G"]
-  svg.select('#nodes')
-    .selectAll("circle")
+
+function populateNotes(notes) {
+  // use degrees not radians
+  // const PI2 = Math.PI * 2
+  // const slice = PI2 / notes.length
+  const angle = (360 / notes.length)
+
+  svg.selectAll('#nodes')
     .data(notes)
-    .enter()
-    .append("circle")
-      .attr('id', (d, i) => {return `${d}`})
-      .attr('cx', 250)
-      .attr('cy', 250)
-      .attr('r', 20)
-      .attr('transform', (_,i) => {
-          // use degrees not radians
-          // const PI2 = Math.PI * 2
-          // const slice = PI2 / notes.length
-          const slice = (360 / notes.length)
-          return `rotate(${-90 + slice * i}, 250, 250) translate(200)`
+    .attr("transform", (d) => {
+            return `translate(${cx}, ${cy})`
         })
-}
+    .join((nodes) => {
+      const node = nodes.append("g")
+        .attr("id", "node")
+        .attr('x', width)
+        .attr('y', height)
+          // .style('stroke', "white")
+          .style('stroke-width', 2)
+          .style('fill', "white")
+          .attr('transform', (_,i) => {
+            console.log(angle)
+            return `rotate(${angle * i}, ${cx}, ${cy}) translate(${radius})` })
 
-populateNotes()
+        node.append("circle")
+          .attr('id', (d, i) => {return `${d}`})
+          .attr('cx', cx)
+          .attr('cy', cy)
+          .attr('r', nodeRadius)
+
+
+        node.append("text")
+          .attr('x', (_,i) => {return cx+i * Math.sin(angle)})
+          .attr('y', (_,i) => {return cy+i * Math.cos(angle)})
+          .attr('transform', (_,i) => {
+            return `rotate(${90*angle*i}, ${cx}, ${cy}) translate(-${i})` })
+          .text((d) => d)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'blue')
+            .attr('dy', '0.3em')
+            .attr('font-size', 1.5*nodeRadius)
+
+          // return node
+        })
+    }
+
+  // .attr('transform', (_, i) => {
+  //   return `rotate(${Math.sin(angle*i)}, ${cx}, ${cy})`
+  //   })
+
+  // const nodes = svg.select('#nodes')
+  //   .selectAll("circle")
+  //   .enter()
+  //   .append("circle")
+      // .attr('id', (d, i) => {return `${d}`})
+      // .attr('cx', 250)
+      // .attr('cy', 250)
+      // .attr('r', 20)
+      // .attr('transform', (_,i) => {
+      //     // use degrees not radians
+      //     // const PI2 = Math.PI * 2
+      //     // const slice = PI2 / notes.length
+      //     const slice = (360 / notes.length)
+      //     return `rotate(${-90 + slice * i}, 250, 250) translate(200)`
+      //   })
+
+//   const labels = svg.select('#nodes')
+//     .append("text")
+//     // .attr('x', 0)
+//     .attr('transform', (d) => {
+//       return `translate(200)`
+//       })
+//     .attr('text-anchor', 'middle')
+//     .text((d, i) => d)
+//       .style('font-size', '10px')
+//       .style('fill', 'black')
+// }
+
+const triads = ["A", "B", "C", "D", "E", "F", "G"]
+populateNotes(triads)

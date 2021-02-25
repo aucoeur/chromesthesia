@@ -43,17 +43,19 @@ svg
     .attr('cy', cy)
     .attr('r', radius)
     .style('stroke', "#FFFFFF")
-    .style('stroke-width', 4)
+    // .attr('opacity', '85%')
+    .style('stroke-width', 10)
     .style('fill', "transparent")
+    // .attr('opacity', '65%')
 
 
-function populateNotes(notes) {
+function populateNotes(notes, nodes) {
   // use degrees not radians
   // const PI2 = Math.PI * 2
   // const slice = PI2 / notes.length
   const angle = (360 / notes.length)
 
-  svg.selectAll('#nodes')
+  svg.selectAll(nodes)
     .data(notes)
     .attr("transform", (d) => {
             return `translate(${cx}, ${cy})`
@@ -65,7 +67,8 @@ function populateNotes(notes) {
         .attr('y', height)
           // .style('stroke', "white")
           .style('stroke-width', 2)
-          .style('fill', "white")
+          .attr('fill', "white")
+          // .attr('opacity', '75%')
           .attr('transform', (_,i) => {
             console.log(angle)
             return `rotate(${angle * i}, ${cx}, ${cy}) translate(${radius})` })
@@ -76,53 +79,34 @@ function populateNotes(notes) {
           .attr('cy', cy)
           .attr('r', nodeRadius)
 
+        node.on('mouseover', function (d, i) {
+          d3.select(this).transition()
+             .duration('50')
+            //  .attr('opacity', '85%')
+             .attr('fill', 'yellow')})
+
+        node.on('mouseout', function (d, i) {
+          d3.select(this).transition()
+               .duration('100')
+               .attr('opacity', '100%')
+               .attr('fill', 'white')})
 
         node.append("text")
           .attr('x', (_,i) => {return cx+i * Math.sin(angle)})
           .attr('y', (_,i) => {return cy+i * Math.cos(angle)})
           .attr('transform', (_,i) => {
-            return `rotate(${90*angle*i}, ${cx}, ${cy}) translate(-${i})` })
+            return `rotate(${-(angle * i)}, ${cx}, ${cy}) translate(${i-1})` })
           .text((d) => d)
             .attr('text-anchor', 'middle')
             .attr('fill', 'blue')
+            .attr('letter-spacing', '-0.1em')
             .attr('dy', '0.3em')
-            .attr('font-size', 1.5*nodeRadius)
-
-          // return node
+            .attr('font-size', 1.05*nodeRadius)
         })
     }
 
-  // .attr('transform', (_, i) => {
-  //   return `rotate(${Math.sin(angle*i)}, ${cx}, ${cy})`
-  //   })
+// const triads = ["A", "B", "C", "D", "E", "F", "G"]
+// populateNotes(triads, 'triads')
 
-  // const nodes = svg.select('#nodes')
-  //   .selectAll("circle")
-  //   .enter()
-  //   .append("circle")
-      // .attr('id', (d, i) => {return `${d}`})
-      // .attr('cx', 250)
-      // .attr('cy', 250)
-      // .attr('r', 20)
-      // .attr('transform', (_,i) => {
-      //     // use degrees not radians
-      //     // const PI2 = Math.PI * 2
-      //     // const slice = PI2 / notes.length
-      //     const slice = (360 / notes.length)
-      //     return `rotate(${-90 + slice * i}, 250, 250) translate(200)`
-      //   })
-
-//   const labels = svg.select('#nodes')
-//     .append("text")
-//     // .attr('x', 0)
-//     .attr('transform', (d) => {
-//       return `translate(200)`
-//       })
-//     .attr('text-anchor', 'middle')
-//     .text((d, i) => d)
-//       .style('font-size', '10px')
-//       .style('fill', 'black')
-// }
-
-const triads = ["A", "B", "C", "D", "E", "F", "G"]
-populateNotes(triads)
+const fifths = ["C", "G", "D", "A", "E", "B", "F#", "C#", "A♭", "E♭", "B♭", "F"]
+populateNotes(fifths, 'fifths')

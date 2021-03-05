@@ -8,7 +8,8 @@ const PI2 = Math.PI * 2
 
 d3.json('./data/lost_penny.json')
   .then(data => {
-    const fifths = data
+
+  const fifths = data
       .map(s => s.chord)
       .reduce((count, note) => {
         if (note in count) {

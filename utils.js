@@ -54,20 +54,24 @@ d3.select('#chroma')
 const margin = {top: 10, right: 10, bottom: 10, left: 10}
 const width2 = 600 - margin.left - margin.right
 const height2 = 600 - margin.top  - margin.bottom
-const innerRadius = Math.min(width2, height2) * .35 //35% of smallest measurement
+const innerRadius = Math.min(width, height)  * .35 //35% of smallest measurement
 const outerRadius = innerRadius * 1.1; //110% of inner radius
 
 const chord = d3.chord()
   // uses radians not degrees .. T_T
-  // .padAngle(0.01)
+  // .padAngle(1/12)
 const matrch = chord(matrix)
 
 const arc = d3.arc()
   .innerRadius(innerRadius)
   .outerRadius(outerRadius)
+  // .startAngle(startAngle)
+  // .endAngle(endAngle)
 
 const ribbon = d3.ribbon()
   .radius(innerRadius)
+  //  .startAngle(startAngle)
+  //   .endAngle(endAngle)
 
 function drawChord() {
   const svg = d3.select('#chroma')

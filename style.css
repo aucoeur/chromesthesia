@@ -31,4 +31,8 @@ body {
 
 a{
     color:rgb(221, 255, 0);
+    padding: 2em;
+}
+p {
+    padding-left:2em;
 }

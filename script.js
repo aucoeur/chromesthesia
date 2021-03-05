@@ -5,10 +5,11 @@ const cy = height / 2
 const radius = 200
 const nodeRadius = radius / 10
 
-const data = d3.json('./data/lost_penny.json')
+d3.json('./data/lost_penny.json')
   .then(data => {
 
-    const head = d3.select('#song')
+    // header
+    d3.select('#song')
       .append('h4')
       .text(data[0].filename)
 
@@ -108,5 +109,5 @@ function populateNotes(notes, nodes) {
 // const triads = ["A", "B", "C", "D", "E", "F", "G"]
 // populateNotes(triads, 'triads')
 
-const fifths = ["C", "G", "D", "A", "E", "B", "F#", "C#", "A♭", "E♭", "B♭", "F"]
+const fifths = ["A", "E", "B", "F♯", "C♯", "A♭", "E♭", "B♭", "F", "C", "G", "D" ]
 populateNotes(fifths, 'fifths')

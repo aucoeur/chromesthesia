@@ -8,3 +8,7 @@ package.json
 package-lock.json
 data/musictheory
 .babelrc
+.env
+data/chord.ipynb
+data/__pycache__/chord.cpython-39.pyc
+__pycache__

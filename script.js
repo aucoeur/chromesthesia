@@ -4,32 +4,31 @@ const cx = width / 2
 const cy = height / 2
 const radius = 200
 const nodeRadius = radius / 10
+const PI2 = Math.PI * 2
 
 d3.json('./data/lost_penny.json')
   .then(data => {
-
-    // header
-    d3.select('#song')
-      .append('h4')
-      .text(data[0].filename)
-
-    const chords = data
+    const fifths = data
       .map(s => s.chord)
-      .reduce((count, chord) => {
-        if (chord in count) {
-          count[chord]++
+      .reduce((count, note) => {
+        if (note in count) {
+          count[note]++
         } else {
-          count[chord] = 1
+          count[note] = 1
         }
         return count
       }, {})
-      console.log(chords)
+      // console.log(fifths)
       return data
   })
 
+// header
+d3.select('#fifths')
+  .append('h4')
+    .text(data[0].filename)
+
 // svg wrapper
-const svg = d3
-  .select('#chord')
+const svg = d3.select('#fifths')
   .append("svg")
     .attr('width', width)
     .attr('height', height)
@@ -48,7 +47,6 @@ svg
     .style('stroke-width', 10)
     .style('fill', "transparent")
     // .attr('opacity', '65%')
-
 
 function populateNotes(notes, nodes) {
   // use degrees not radians

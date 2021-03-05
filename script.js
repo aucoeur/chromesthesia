@@ -21,8 +21,8 @@ d3.json('data/lost_penny.json')
       }, {})
       // console.log(fifths)
       return data
-  })
 
+  })
 // header
 d3.select('#fifths')
   .append('h4')

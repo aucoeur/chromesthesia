@@ -6,7 +6,7 @@ const radius = 200
 const nodeRadius = radius / 10
 const PI2 = Math.PI * 2
 
-d3.json('/data/lost_penny.json')
+d3.json('data/lost_penny.json')
   .then(data => {
 
   const fifths = data
